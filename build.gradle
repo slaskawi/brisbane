@@ -62,8 +62,9 @@ javadoc {
     options.addBooleanOption('Xdoclint:all,-missing', true)
 }
 
-group = 'brisbane.jipher'
-version = findProperty('ProjVersion') ?: '20.1'
+group = System.getenv('JITPACK') ? System.getenv('GROUP') : 'pl.slaskawi'
+project.ext.jipherVersion = findProperty('ProjVersion') ?: '20.1'
+version = System.getenv('JITPACK') ? System.getenv('VERSION') : project.ext.jipherVersion
 
 tasks.withType(JavaCompile).configureEach {
     options.release = 25
@@ -73,7 +74,7 @@ compileJava {
     options.javaModuleMainClass.set('com.oracle.jipher.provider.JipherJCE')
 
     // Workaround for https://github.com/gradle/gradle/issues/17484
-    options.compilerArgs.addAll(['--module-version', project.version])
+    options.compilerArgs.addAll(['--module-version', project.ext.jipherVersion])
 }
 
 tasks.withType(JavaCompile) {
@@ -92,7 +93,7 @@ tasks.register('processSource', Sync) {
     def ALL_VERSIONS = '[,]'
     from sourceSets.main.java
     filter(ReplaceTokens, tokens: [
-            VERSION                                                     : version,
+            VERSION                                                     : project.ext.jipherVersion,
             SANCTIONED_CRYPTO_LIBRARY_VERSIONS_DEFAULT_VALUE            : ALL_VERSIONS,
             SANCTIONED_FIPS_PROVIDER_VERSIONS_DEFAULT_VALUE             : ALL_VERSIONS,
             SANCTIONED_OS_PROVIDED_CRYPTO_LIBRARY_VERSIONS_DEFAULT_VALUE: ALL_VERSIONS,
@@ -136,7 +137,7 @@ def manifestAttributes() {
     return [
         'Implementation-Title' : 'Open Jipher JCE (FIPS OpenSSL Wrapper for Java)',
         'Implementation-Vendor' : 'Oracle Corporation',
-        'Implementation-Version' : version,
+        'Implementation-Version' : project.ext.jipherVersion,
         'Build-Date' : buildDate(),
         'Build-Commit' : commitId(),
         'Build-Jdk' : "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})",
@@ -197,6 +198,7 @@ def buildDate( ){
 publishing {
     publications {
         maven(MavenPublication) { publication ->
+            artifactId = System.getenv('JITPACK') ? System.getenv('ARTIFACT') : 'jipher-jce'
             artifact jar
             artifact sourcesJar
         }

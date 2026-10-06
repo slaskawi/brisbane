@@ -1,5 +1,13 @@
 # Brisbane
 
+This is an unofficial fork for a proof of concept integrating Project Brisbane into Keycloak.
+It is not an OpenJDK release.
+JitPack is configured to build this fork with JDK 25 as `com.github.slaskawi:brisbane:<commit>`;
+local Gradle publication uses `pl.slaskawi:jipher-jce:20.1`.
+The JAR does not include OpenSSL. A Keycloak UBI image using it needs JDK 25,
+OpenSSL 3.5.9, and the FIPS 140-3 validated OpenSSL 3.1.2 provider installed separately.
+Keycloak's current UBI image installs JDK 21, so this PoC needs a JDK 25 image variant.
+
 Project Brisbane delivers a Java [Cryptographic Service Provider](https://docs.oracle.com/en/java/javase/26/security/java-cryptography-architecture-jca-reference-guide.html#GUID-3E0744CE-6AC7-4A6D-A1F6-6C01199E6920) (CSP)
 for Java's [JCA](https://docs.oracle.com/en/java/javase/26/security/java-cryptography-architecture-jca-reference-guide.html#GUID-2BCFDD85-D533-4E6C-8CE9-29990DEB0190) framework,
 enabling Java applications to use FIPS-validated cryptography in regulated environments.
