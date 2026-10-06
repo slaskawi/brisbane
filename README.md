@@ -46,6 +46,24 @@ in case a similar issue has already been opened.
 
 For instructions on building and testing the project, see [doc/build-and-test.md](doc/build-and-test.md).
 
+To use the published JAR, add this to your Maven `pom.xml`:
+
+```xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+<dependencies>
+    <dependency>
+        <groupId>com.github.slaskawi</groupId>
+        <artifactId>brisbane</artifactId>
+        <version>d50c2f1</version>
+    </dependency>
+</dependencies>
+```
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull
